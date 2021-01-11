@@ -5,7 +5,7 @@ import { signIn,signOut} from '../actions'
 
 class GoogleAuth extends React.Component{
     //we are putting null bcz we do not know if the user is signed in or not 
-    state ={ isSignedIn:null}
+    // state ={ isSignedIn:null}
 
     componentDidMount(){
         window.gapi.load('client:auth2',()=>{
@@ -15,7 +15,8 @@ class GoogleAuth extends React.Component{
             }).then(()=>{
                 this.auth =window.gapi.auth2.getAuthInstance();
                 //we are going to update our component level state with isSignedIn
-                this.setState({ isSignedIn :this.auth.isSignedIn.get()})
+                // this.setState({ isSignedIn :this.auth.isSignedIn.get()})
+                this.onAuthChange(this.auth.isSignedIn.get())
                 //this will listen when google auth instance is being changed to different state
                 //such as signed in or signed out
                 this.auth.isSignedIn.listen(this.onAuthChange);
@@ -43,9 +44,9 @@ class GoogleAuth extends React.Component{
     }
 
     renderAuthButton (){
-        if(this.state.isSignedIn === null){
+        if(this.props.isSignedIn === null){
             return null;
-        }else if (this.state.isSignedIn){
+        }else if (this.props.isSignedIn){
             return (<button  onClick={this.onSignOutClick} className="ui red google button"><i className="google icon"/>Sign Out</button>)
         }else{
             return (<button  onClick={this.onSignInClick} className="ui green google button">
@@ -59,5 +60,8 @@ class GoogleAuth extends React.Component{
     }
 }
 
+const mapStateToProps =(state)=>{
+    return { isSignedIn:state.auth.isSignedIn}
+}
 
-export default connect(null,{ signIn,signOut})(GoogleAuth);
+export default connect(mapStateToProps,{ signIn,signOut})(GoogleAuth);
