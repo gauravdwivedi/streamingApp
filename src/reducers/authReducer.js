@@ -5,7 +5,7 @@ const INITIAL_STATE={
     userId:null
 }
 
-export default (state=INITIAL_STATE,action)=>{
+const reducers = (state=INITIAL_STATE,action)=>{
 
     switch(action.type){
 
@@ -20,3 +20,5 @@ export default (state=INITIAL_STATE,action)=>{
     }
 
 }
+
+export default reducers;
